@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function getGoogleBooksData (querystring) {
   let $xhr = $.ajax({
     type: "GET",
-    url: `http://localhost:5000/search`
+    url: `/search`
   }).then(
     function (result) {
       console.log(result);
