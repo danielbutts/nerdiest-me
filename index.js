@@ -1,7 +1,8 @@
-var express = require('express');
-const request = require('request');
-var app = express();
-var pg = require('pg');
+require('dotenv').config()
+let express = require('express');
+let request = require('request');
+let app = express();
+let pg = require('pg');
 
 app.get('/db', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
@@ -16,26 +17,39 @@ app.get('/db', function (request, response) {
 });
 
 app.get('/search', function (req, res) {
-  let searchString = 'javascript';
+
+  let searchString = req.query.title;
+  // console.log(searchString);
+  // let searchString = 'javascript';
   let url = `https://www.googleapis.com/books/v1/volumes?q=${searchString}&key=${process.env.GOOGLE_KEY}`;
   let books = [];
   request(url, function(err, response, body) {
     body = JSON.parse(body);
-    // console.log('items:', body.items); // Print the HTML for the Google homepage.
+    // console.log(body.items); // Print the HTML for the Google homepage.
+    if (body.items != undefined) {
+      for (let item of body.items) {
+        let book = {};
+        book['title'] = item.volumeInfo.title;
 
-    for (let item of body.items) {
-      let book = {};
-      book['title'] = item.volumeInfo.title;
-      book['authors'] = item.volumeInfo.authors;
-      book['categories'] = item.volumeInfo.categories;
-      book['pageCount'] = item.volumeInfo.pageCount;
-      book['publishedDate'] = item.volumeInfo.publishedDate;
-      book['publisher'] = item.volumeInfo.publisher;
-      book['image'] = item.volumeInfo.imageLinks.thumbnail;
-      // console.log(book);
-      books.push(book);
+        let identifiers = item.volumeInfo.industryIdentifiers;
+        for (let id of identifiers) {
+          if (id.type == "ISBN_13") {
+            book['isbn'] = id.identifier;
+          }
+        }
+        book['authors'] = item.volumeInfo.authors;
+        book['categories'] = item.volumeInfo.categories;
+        book['pageCount'] = item.volumeInfo.pageCount;
+        book['publishedDate'] = item.volumeInfo.publishedDate;
+        book['publisher'] = item.volumeInfo.publisher;
+        if(item.volumeInfo.imageLinks != undefined) {
+          book['image'] = item.volumeInfo.imageLinks.thumbnail;
+        } else {
+          book['image'] = '';
+        }
+        books.push(book);
+      }
     }
-    // console.log(books);
     res.send(books);
   });
 

@@ -1,0 +1,36 @@
+img.logo {
+  width:25px;
+  height:25px;
+  display:inline;
+  margin:0px;
+  margin-right: 10px;
+}
+
+div.table {
+  height:400px;
+  background-color: lightgreen;
+}
+
+div.graph {
+  height:400px;
+  background-color: lightgray;
+}
+
+span.action {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display:inline-block;
+}
+
+a.isHidden {
+  display:none;
+}
+
+div.isHidden {
+  display:none;
+}
+
+img.thumbnail {
+  width:64px;
+  height:85px;
+}
