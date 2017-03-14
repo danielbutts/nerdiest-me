@@ -1,4 +1,5 @@
 var express = require('express');
+const request = require('request');
 var app = express();
 var pg = require('pg');
 
@@ -12,6 +13,32 @@ app.get('/db', function (request, response) {
        { response.render('pages/db', {results: result.rows} ); }
     });
   });
+});
+
+app.get('/search', function (req, res) {
+  let searchString = 'javascript';
+  let url = `https://www.googleapis.com/books/v1/volumes?q=${searchString}&key=${process.env.GOOGLE_KEY}`;
+  let books = [];
+  request(url, function(err, response, body) {
+    body = JSON.parse(body);
+    // console.log('items:', body.items); // Print the HTML for the Google homepage.
+
+    for (let item of body.items) {
+      let book = {};
+      book['title'] = item.volumeInfo.title;
+      book['authors'] = item.volumeInfo.authors;
+      book['categories'] = item.volumeInfo.categories;
+      book['pageCount'] = item.volumeInfo.pageCount;
+      book['publishedDate'] = item.volumeInfo.publishedDate;
+      book['publisher'] = item.volumeInfo.publisher;
+      book['image'] = item.volumeInfo.imageLinks.thumbnail;
+      // console.log(book);
+      books.push(book);
+    }
+    // console.log(books);
+    res.send(books);
+  });
+
 });
 
 app.set('port', (process.env.PORT || 5000));
