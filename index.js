@@ -55,6 +55,7 @@ app.get('/search', function (req, res) {
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.post('/add-goal', function (request, response) {
+  console.log('/add-goal endpoint');
   let body = request.body;
   let userId = parseInt(body.user_id);
   let book = {}
@@ -76,18 +77,18 @@ app.post('/add-goal', function (request, response) {
     book.image_url = encodeURIComponent(body.book.image);
   }
   let startDate = new Date(body['start-date']);
-  // console.log(`startDate: ${body['start-date']} | ${new Date(body['start-date']).getTime()}`);
   let endDate = new Date(body['end-date']);
-  // console.log(`endDate: ${body['start-date']} | ${new Date(body['end-date']).getTime()}`);
 
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
 
     // check if book already exists in the database
     let newBook = true;
     client.query('select * from books where isbn = $1', [book.isbn], function(err, result) {
+      console.log('checking for existing book.');
       done();
       if (err) {
-        console.error(err); response.send("Error " + err);
+        console.error(err);
+        response.send("Error " + err);
       } else {
         if (result.rowCount == 0 ) {
           client.query('insert into books (isbn,pages,title,authors,publisher,published,image_url) values ($1,$2,$3,$4,$5,$6,$7)', [book.isbn,book.pages,book.title,book.authors,book.publisher,book.published,book.image_url], function(err, result) {
@@ -101,22 +102,33 @@ app.post('/add-goal', function (request, response) {
     });
 
     client.query('select * from goals where isbn = $1 and user_id = $2', [book.isbn,userId], function(err, result) {
+      console.log('checking for existing goal.' + book.isbn + ' ' +userId);
       done();
       if (err) {
-        console.error(err); response.send("Error " + err);
+        console.error(err);
+        response.send("Error " + err);
       } else {
+        console.log('result.rowCount '+result.rowCount);
+
         if (result.rowCount == 0 ) {
+          console.log('inserting goal: ' + userId+' '+book.isbn+' '+startDate+' '+endDate+' '+false+' '+true);
           client.query('insert into goals (user_id,isbn,start_date,end_date,complete,active) values ($1,$2,$3,$4,$5,$6)', [userId,book.isbn,startDate,endDate,false,true], function(err, result) {
             done();
             if (err) {
-              console.error(err); response.send("Error " + err);
+              console.error(err);
+              response.send("Error " + err);
             } else {
+              console.log('Goal added');
               response.send({message:`Goal successfully added for user ${userId} and book ${book.isbn}`});
             }
           });
+        } else {
+          console.log('goal already existed');
+          response.send({message:`Goal already existed`});
         }
       }
     });
+    // response.send({message:`We shouldn't get here`});
   });
 });
 

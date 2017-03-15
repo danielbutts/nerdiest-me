@@ -34,18 +34,27 @@
       <div class="col-xs-12 add-form isHidden">
         <form id="addForm" class="form">
           <div class="form-group">
-            <label for="add-title">Title</label>
-            <input type="text" class="form-control" id="add-title" disabled="true">
+            <label for="addIsbn">ISBN</label>
+            <input type="text" class="form-control" id="addIsbn" disabled="true">
           </div>
           <div class="form-group">
-            <label for="start-date">Start</label>
-            <input type="date" class="form-control" id="start-date">
+            <label for="addTitle">Title</label>
+            <input type="text" class="form-control" id="addTitle" disabled="true">
           </div>
           <div class="form-group">
-            <label for="end-date">Complete by</label>
-            <input type="date" class="form-control" id="end-date">
+            <label for="addPages">Pages</label>
+            <input type="text" class="form-control" id="addPages" disabled="true">
           </div>
-          <button type="submit" class="btn btn-default">Add</button> <button id="addCancel" class="btn btn-default">Cancel</button>
+          <div class="form-group">
+            <label for="addStartDate">Start on</label>
+            <input type="date" class="form-control" id="addStartDate">
+          </div>
+          <div class="form-group">
+            <label for="addEndDate">Complete by</label>
+            <input type="date" class="form-control" id="addEndDate">
+          </div>
+          <button type="submit" class="btn btn-default">Add</button>
+          <!-- <button id="addCancel" class="btn btn-default">Cancel</button> -->
         </form>
         <div>
           <table id="results" class="table table-striped isHidden">

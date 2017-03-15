@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.2.5",
-  "description": "A sample Node.js app using Express 4",
+  "name": "Nerdiest.me",
+  "version": "0.0.1",
+  "description": "Track your progress to becoming the nerdiest you can be!",
   "engines": {
     "node": "7.5.0"
   },
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/danielbutts/nerdiest-me"
   },
   "keywords": [
     "node",

@@ -53,10 +53,13 @@ function showSearch (e) {
 function chooseBook(e) {
   let el = $(e.target).closest("tr");
   let isbn = $(el).attr('id');
-  console.log(isbn);
-  $('.add-form #add-title').val(isbn);
-  $('#start-date').val(getDateFromToday());
-  $('#end-date').val(getDateFromToday(14));
+  let book = books[isbn];
+  $('#addTitle').val(book.title);
+  $('#addIsbn').val(isbn);
+  $('#addStartDate').val(getDateFromToday());
+  $('#addEndDate').val(getDateFromToday(14));
+  $('#addPages').val(book.pageCount);
+
   $('.search-form').addClass('isHidden');
   $('.add-form').removeClass('isHidden');
 }
@@ -85,9 +88,9 @@ function cancelSearch () {
   $('#show_datatable').removeClass('isHidden');
 }
 
+let books = {};
 function submitSearch (e) {
   e.preventDefault();
-  // $('#results tbody').removeClass('isHidden');
   $('#results').removeClass('isHidden');
   $('.datatable').addClass('isHidden');
   let title = $('#title').val();
@@ -96,10 +99,8 @@ function submitSearch (e) {
     url: `/search?title=${title}`
   }).then(
     function (result) {
-      // console.log(result);
       let booksDiv = $('.books');
       $('#results tbody').empty();
-      // $('#results').append(`<tr><th></th><th>Title</th><th>Authors</th><th>Pages</th><th>Publisher</th><th>Date</th></tr>`);
 
       for (let book of result) {
         let title = book.title;
@@ -118,6 +119,17 @@ function submitSearch (e) {
           continue;
         }
 
+        books[isbn] =
+          { title:title,
+          isbn:isbn,
+          authors:authors,
+          categories:categories,
+          pageCount:pageCount,
+          publishedDate:publishedDate,
+          publisher:publisher,
+          image:image
+          };
+
         $('#results tbody').append(`<tr id="${isbn}">
         <td><img src="${image}" class="thumbnail" alt="book cover image"></td>
         <td>${title}</td>
@@ -135,23 +147,32 @@ function submitSearch (e) {
         });
 
       }
-    // console.log(result)
   }).catch(function (error) {
     console.error('Error:',error)
   });
 }
 
 function submitAdd (e) {
+  console.log('send post to add a new goal');
   e.preventDefault();
+  let form = e.target;
+  let isbn = $('#addIsbn').val();
+  console.log(`isbn- ${isbn}`);
+
+  let book = books[isbn];
+  console.log(book);
+  let startDate = $('#addStartDate').val();
+  let endDate = $('#addEndDate').val();
+
   let $xhr = $.ajax({
     type: "POST",
     url: '/add-goal',
     dataType: 'json',
-    // contentType: 'application/json',
     data: {'user_id': 1 ,
-        'book' : {"title":"JavaScript and JQuery","isbn":"9781118871652","authors":["Jon Duckett"],"categories":["Computers"],"pageCount":640,"publishedDate":"2014-07-21","publisher":"John Wiley & Sons","image":"http://books.google.com/books/content?id=_uTRAwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"},
-        'start-date': new Date(),
-        'end-date': new Date()}
+        'book' : book,
+        'start-date': startDate,
+        'end-date': endDate
+      }
   }).then(function (result) {
       console.log(result);
   }).catch(function (error) {
@@ -177,8 +198,3 @@ function toggleHide(e) {
     $('.'+$(el).attr('id').split('_')[1]).addClass('isHidden');
   }
 }
-
-
-// let graphData = [
-//   {'1001':}
-// ]
