@@ -1,8 +1,8 @@
 {
-  "name": "Start on Heroku: Node.js",
-  "description": "A barebones Node.js app using Express 4",
-  "repository": "https://github.com/heroku/node-js-getting-started",
-  "logo": "http://node-js-sample.herokuapp.com/node.svg",
-  "keywords": ["node", "express", "static"],
+  "name": "Nerdiest.me",
+  "description": "Track your progress to becoming the nerdiest you can be!",
+  "repository": "https://github.com/danielbutts/nerdiest-me",
+  "logo": "https://raw.githubusercontent.com/danielbutts/nerdiest-me/master/public/images/glasses-logo.png",
+  "keywords": [],
   "image": "heroku/nodejs"
 }

@@ -3,10 +3,11 @@ let express = require('express');
 let request = require('request');
 let app = express();
 let pg = require('pg');
+var bodyParser = require('body-parser')
 
 app.get('/db', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table', function(err, result) {
+    client.query('SELECT * FROM users', function(err, result) {
       done();
       if (err)
        { console.error(err); response.send("Error " + err); }
@@ -17,15 +18,11 @@ app.get('/db', function (request, response) {
 });
 
 app.get('/search', function (req, res) {
-
   let searchString = req.query.title;
-  // console.log(searchString);
-  // let searchString = 'javascript';
   let url = `https://www.googleapis.com/books/v1/volumes?q=${searchString}&key=${process.env.GOOGLE_KEY}`;
   let books = [];
   request(url, function(err, response, body) {
     body = JSON.parse(body);
-    // console.log(body.items); // Print the HTML for the Google homepage.
     if (body.items != undefined) {
       for (let item of body.items) {
         let book = {};
@@ -53,6 +50,74 @@ app.get('/search', function (req, res) {
     res.send(books);
   });
 
+});
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.post('/add-goal', function (request, response) {
+  let body = request.body;
+  let userId = parseInt(body.user_id);
+  let book = {}
+  if (body.book != null) {
+    book.title = encodeURIComponent(body.book.title);
+    book.isbn = encodeURIComponent(body.book.isbn);
+    // book.categories = [];
+    // for (let category in body.book.categories) {
+    //   book.categories.push(encodeURIComponent(category));
+    // }
+    book.authors = [];
+    for (let author in body.book.authors) {
+      book.authors.push(encodeURIComponent(author));
+    }
+    book.pages = parseInt(body.book.pageCount);
+    book.published = new Date(body.book.publishedDate);
+    // console.log(`publishedDate: ${body.book.publishedDate} | ${new Date(body.book.publishedDate).getTime()}`);
+    book.publisher = encodeURIComponent(body.book.publisher);
+    book.image_url = encodeURIComponent(body.book.image);
+  }
+  let startDate = new Date(body['start-date']);
+  // console.log(`startDate: ${body['start-date']} | ${new Date(body['start-date']).getTime()}`);
+  let endDate = new Date(body['end-date']);
+  // console.log(`endDate: ${body['start-date']} | ${new Date(body['end-date']).getTime()}`);
+
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+
+    // check if book already exists in the database
+    let newBook = true;
+    client.query('select * from books where isbn = $1', [book.isbn], function(err, result) {
+      done();
+      if (err) {
+        console.error(err); response.send("Error " + err);
+      } else {
+        if (result.rowCount == 0 ) {
+          client.query('insert into books (isbn,pages,title,authors,publisher,published,image_url) values ($1,$2,$3,$4,$5,$6,$7)', [book.isbn,book.pages,book.title,book.authors,book.publisher,book.published,book.image_url], function(err, result) {
+            done();
+            if (err) {
+              console.error(err); response.send("Error " + err);
+            }
+          });
+        }
+      }
+    });
+
+    client.query('select * from goals where isbn = $1 and user_id = $2', [book.isbn,userId], function(err, result) {
+      done();
+      if (err) {
+        console.error(err); response.send("Error " + err);
+      } else {
+        if (result.rowCount == 0 ) {
+          client.query('insert into goals (user_id,isbn,start_date,end_date,complete,active) values ($1,$2,$3,$4,$5,$6)', [userId,book.isbn,startDate,endDate,false,true], function(err, result) {
+            done();
+            if (err) {
+              console.error(err); response.send("Error " + err);
+            } else {
+              response.send({message:`Goal successfully added for user ${userId} and book ${book.isbn}`});
+            }
+          });
+        }
+      }
+    });
+  });
 });
 
 app.set('port', (process.env.PORT || 5000));

@@ -6,14 +6,38 @@ img.logo {
   margin-right: 10px;
 }
 
-div.table {
+div.datatable {
   height:400px;
   background-color: lightgreen;
+  border-radius: 10px;
+  border:1px solid darkgray;
+  margin-bottom:10px;
+}
+
+div.search-form {
+  background-color: lightyellow;
+  border-radius: 10px;
+  border:1px solid darkgray;
+  margin-bottom:10px;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+div.add-form {
+  background-color: lightblue;
+  border-radius: 10px;
+  border:1px solid darkgray;
+  margin-bottom:10px;
+  padding-top:10px;
+  padding-bottom:10px;
 }
 
 div.graph {
   height:400px;
   background-color: lightgray;
+  border-radius: 10px;
+  border:1px solid darkgray;
+  margin-bottom:10px;
 }
 
 span.action {
@@ -22,11 +46,15 @@ span.action {
   display:inline-block;
 }
 
-a.isHidden {
+/*a.isHidden {
   display:none;
 }
 
 div.isHidden {
+  display:none;
+}*/
+
+.isHidden {
   display:none;
 }
 
