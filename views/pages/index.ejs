@@ -10,8 +10,6 @@
     <div class="row"> <!-- Button and status message row -->
       <div class="col-xs-12 text-right">
         <span class="h4"><a id="show_search-form" hef="#"><span class="label label-default action"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Goal</span></a></span>
-        <!-- <span class="h3"><a id="show_goalsTable" hef="#" class="isHidden"><span class="label label-default action"><span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span> Show</span></a></span>
-        <span class="h3"><a id="hide_goalsTable" hef="#"><span class="label label-default action"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Hide</span></a></span> -->
       </div>
     </div>
     <div class="row"> <!-- Progress graph row -->
@@ -19,9 +17,6 @@
         <div class="h4">Progress vs. Goals:</div>
         <div class="text-center svg-container">
           <svg>
-            <!-- <text x="250" y="25" font-family="sans-serif" font-size="25" fill="gray">Easy-peasy</text>
-            <circle cx="25" cy="25" r="22"
-          fill="yellow" stroke="orange" stroke-width="5"/> -->
           </svg>
         </div>
       </div>
@@ -30,10 +25,7 @@
       <div class="col-xs-12 edit-goal-form isHidden">
         <div class="h4">Edit Goal:</div>
         <form id="editGoalForm" class="form-inline">
-          <div class="form-group">
-            <label for="editGoalIsbn">ISBN</label>
-            <input type="text" class="form-control" id="editGoalIsbn" disabled="true">
-          </div>
+          <input type="hidden" class="form-control" id="editGoalIsbn">
           <div class="form-group">
             <label for="editGoalStartDate">Start on</label>
             <input type="date" class="form-control" id="editGoalStartDate">
@@ -54,8 +46,7 @@
         <div class="h4">Record Progress:</div>
         <form id="addProgressForm" class="form-inline">
           <div class="form-group">
-            <label for="addProgressIsbn">ISBN</label>
-            <input type="text" class="form-control" id="addProgressIsbn" disabled="true">
+            <input type="hidden" class="form-control" id="addProgressIsbn">
           </div>
           <div class="form-group">
             <label for="addProgressDate">Date</label>
@@ -85,6 +76,7 @@
           </div>
           <div class="form-group">
             <button type="submit" class="btn btn-default">Confirm</button>
+            <button id="archiveCancel" type="button" class="btn btn-default">Cancel</button>
           </div>
         </form>
       </div>
@@ -97,7 +89,8 @@
             <label for="title">Title</label>
             <input type="text" class="form-control" id="title" placeholder="Title">
           </div>
-          <button type="submit" class="btn btn-default">Search</button> <button id="searchCancel" class="btn btn-default">Cancel</button>
+          <button type="submit" class="btn btn-default">Search</button>
+          <button id="searchCancel" type="button" class="btn btn-default">Cancel</button>
         </form>
         <div>
           <table id="results" class="table table-striped isHidden">
@@ -108,31 +101,28 @@
       </div>
     </div>
     <div class="row"> <!-- Add goal form row -->
-      <div class="col-xs-12 add-form isHidden">
+      <div class="col-xs-12 add-goal-form isHidden">
         <div class="h4">Create Goal:</div>
         <form id="addForm" class="form">
+          <input type="hidden" class="form-control" id="addGoalIsbn">
           <div class="form-group">
-            <label for="addIsbn">ISBN</label>
-            <input type="text" class="form-control" id="addIsbn" disabled="true">
+            <label for="addGoalTitle">Title</label>
+            <input type="text" class="form-control" id="addGoalTitle" disabled="true">
           </div>
           <div class="form-group">
-            <label for="addTitle">Title</label>
-            <input type="text" class="form-control" id="addTitle" disabled="true">
+            <label for="addGoalPages">Pages</label>
+            <input type="text" class="form-control" id="addGoalPages" disabled="true">
           </div>
           <div class="form-group">
-            <label for="addPages">Pages</label>
-            <input type="text" class="form-control" id="addPages" disabled="true">
+            <label for="addGoalStartDate">Start on</label>
+            <input type="date" class="form-control" id="addGoalStartDate">
           </div>
           <div class="form-group">
-            <label for="addStartDate">Start on</label>
-            <input type="date" class="form-control" id="addStartDate">
-          </div>
-          <div class="form-group">
-            <label for="addEndDate">Complete by</label>
-            <input type="date" class="form-control" id="addEndDate">
+            <label for="addGoalEndDate">Complete by</label>
+            <input type="date" class="form-control" id="addGoalEndDate">
           </div>
           <button type="submit" class="btn btn-default">Add</button>
-          <!-- <button id="addCancel" class="btn btn-default">Cancel</button> -->
+          <button id="addGoalCancel" type="button" class="btn btn-default">Cancel</button>
         </form>
         <div>
           <table id="results" class="table table-striped isHidden">
@@ -151,11 +141,6 @@
         </table>
       </div>
     </div>
-    <!-- <div class="row">
-        <div class="col-xs-12">
-        <br><br>
-      </div>
-    </div> -->
     <div class="row"> <!-- Goal Progress row -->
       <div class="col-xs-12 progressTable">
         <div class="h4">Your Progress:</div>

@@ -144,6 +144,14 @@ app.post('/add-goal', function (request, response) {
               console.error(err);
               response.send("Error " + err);
             } else {
+              console.log('inserting starting point into progress.');
+              console.log(`[userId,book.isbn,startDate,0] ${userId},${book.isbn},${startDate},0]`);
+              client.query('insert into progress (user_id,isbn,event_date,pages) values ($1,$2,$3,$4)', [userId,book.isbn,startDate,0], function(err, result) {
+                done();
+                if (err) {
+                  console.error(err); response.send("Error " + err);
+                }
+              });
               console.log('Goal added');
               response.send({message:`Goal successfully added for user ${userId} and book ${book.isbn}`});
             }

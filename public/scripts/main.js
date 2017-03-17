@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
   $('#searchCancel').click(cancelSearch);
+  $('#archiveCancel').click(cancelArchive);
   $('#addCancel').click(cancelAdd);
+  $('#addGoalCancel').click(cancelAddGoal);
+  $('#editGoalCancel').click(cancelEditGoal);
+  $('#addProgressCancel').click(cancelAddProgress);
 
   $('#show_search-form').click(showSearch);
 
@@ -55,7 +59,9 @@ function editGoal(e) {
   $('#editGoalEndDate').val(getFormattedDate(endDate));
   $('.edit-goal-form').removeClass('isHidden');
   $('#editGoalIsbn').val(isbn);
-  // console.log(`edit goal for ${isbn}`)
+  $('.add-progress-form').addClass('isHidden');
+  $('.search-form').addClass('isHidden');
+  $('.archive-goal-form').addClass('isHidden');
 }
 
 function submitEditGoal(e) {
@@ -103,6 +109,9 @@ function addProgress(e) {
   $('#addProgressDate').val(getDateFromToday());
   $('.add-progress-form').removeClass('isHidden');
   $('#addProgressIsbn').val(isbn);
+  $('.edit-goal-form').addClass('isHidden');
+  $('.search-form').addClass('isHidden');
+  $('.archive-goal-form').addClass('isHidden');
 }
 
 function submitAddProgress(e) {
@@ -144,6 +153,9 @@ function showArchiveConfirmation(e) {
   let isbn = $(el).attr('id').split('_')[2];
   $('.archive-goal-form').removeClass('isHidden');
   $('#confirmArchiveIsbn').val(isbn);
+  $('.add-progress-form').addClass('isHidden');
+  $('.edit-goal-form').addClass('isHidden');
+  $('.search-form').addClass('isHidden');
 }
 
 function confirmArchiveGoal(e) {
@@ -191,40 +203,49 @@ function showSearch (e) {
   $('.search-form').removeClass('isHidden');
   $('#add_progress').addClass('isHidden');
   $('#results').addClass('isHidden');
+  $('.add-progress-form').addClass('isHidden');
+  $('.edit-goal-form').addClass('isHidden');
+  $('.archive-goal-form').addClass('isHidden');
 }
 
 function chooseBook(e) {
   let el = $(e.target).closest("tr");
   let isbn = $(el).attr('id');
   let book = books[isbn];
-  $('#addTitle').val(book.title);
-  $('#addIsbn').val(isbn);
-  $('#addStartDate').val(getDateFromToday());
-  $('#addEndDate').val(getDateFromToday(14));
-  $('#addPages').val(book.pageCount);
+  $('#addGoalTitle').val(book.title);
+  $('#addGoalIsbn').val(isbn);
+  $('#addGoalStartDate').val(getDateFromToday());
+  $('#addGoalEndDate').val(getDateFromToday(14));
+  $('#addGoalPages').val(book.pageCount);
 
   $('.search-form').addClass('isHidden');
-  $('.add-form').removeClass('isHidden');
+  $('.add-goal-form').removeClass('isHidden');
   $('#searchForm').trigger("reset");
 }
 
 function cancelAdd () {
-  console.log('Canceled Add');
+  $('#results').addClass('isHidden');
+  $('.search-form').addClass('isHidden');
+}
+
+function cancelAddGoal () {
+  $('.add-goal-form').addClass('isHidden');
+}
+
+function cancelAddProgress () {
+  $('.add-progress-form').addClass('isHidden');
+}
+
+function cancelEditGoal () {
+  $('.edit-goal-form').addClass('isHidden');
 }
 
 function cancelSearch () {
-  $('#results').addClass('isHidden');
   $('.search-form').addClass('isHidden');
-  // $('#dataTable').addClass('wheee');
-  // $('.datatable').removeClass('isHidden');
-  // $('.goalsTable').removeClass('isHidden');
-  // $('#show_search-form').removeClass('isHidden');
-  $('#add_progress').removeClass('isHidden');
-  // $('#hide_goalsTable').removeClass('isHidden');
-  // $('#show_goalsTable').addClass('wheee');
-  // $('#show_goalsTable').removeClass('isHidden');
-  // $('#hide_datatable').removeClass('isHidden');
-  // $('#show_datatable').removeClass('isHidden');
+}
+
+function cancelArchive () {
+  $('.archive-goal-form').addClass('isHidden');
 }
 
 let books = {};
@@ -532,8 +553,6 @@ function getProgress () {
   });
 }
 
-
-
 function getGoals () {
   let userId = 1;
   $('#goalsTable tbody').empty();
@@ -582,13 +601,13 @@ function submitAdd (e) {
   console.log('send post to add a new goal');
   e.preventDefault();
   let form = e.target;
-  let isbn = $('#addIsbn').val();
+  let isbn = $('#addGoalIsbn').val();
   console.log(`isbn- ${isbn}`);
 
   let book = books[isbn];
   console.log(book);
-  let startDate = $('#addStartDate').val();
-  let endDate = $('#addEndDate').val();
+  let startDate = $('#addGoalStartDate').val();
+  let endDate = $('#addGoalEndDate').val();
 
   let $xhr = $.ajax({
     type: "POST",
@@ -601,8 +620,8 @@ function submitAdd (e) {
       }
   }).then(function (result) {
     getGoals();
-    $('#addForm').trigger("reset");
-    $('.add-form').addClass('isHidden');
+    $('#addGoalForm').trigger("reset");
+    $('.add-goal-form').addClass('isHidden');
   }).catch(function (error) {
     console.error('Error:',error)
   });
