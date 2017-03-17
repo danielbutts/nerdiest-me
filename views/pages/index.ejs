@@ -7,16 +7,91 @@
   <% include ../partials/nav.ejs %>
 
   <div class="container">
-    <div class="row">
+    <div class="row"> <!-- Button and status message row -->
       <div class="col-xs-12 text-right">
-        <span class="h3"><a id="show_search-form" hef="#"><span class="label label-default action"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Goal</span></a></span>
-        <span class="h3"><a id="add_progress" hef="#"><span class="label label-default action"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Record Progress</span></a></span>
-        <span class="h3"><a id="show_graph" hef="#" class="isHidden"><span class="label label-default action"><span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span> Show</span></a></span>
-        <span class="h3"><a id="hide_graph" hef="#"><span class="label label-default action"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Hide</span></a></span>
+        <span class="h4"><a id="show_search-form" hef="#"><span class="label label-default action"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Goal</span></a></span>
+        <!-- <span class="h3"><a id="show_goalsTable" hef="#" class="isHidden"><span class="label label-default action"><span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span> Show</span></a></span>
+        <span class="h3"><a id="hide_goalsTable" hef="#"><span class="label label-default action"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Hide</span></a></span> -->
       </div>
     </div>
-    <div class="row">
+    <div class="row"> <!-- Progress graph row -->
+      <div class="col-xs-12 progressGraph">
+        <div class="h4">Progress vs. Goals:</div>
+        <div class="text-center svg-container">
+          <svg>
+            <!-- <text x="250" y="25" font-family="sans-serif" font-size="25" fill="gray">Easy-peasy</text>
+            <circle cx="25" cy="25" r="22"
+          fill="yellow" stroke="orange" stroke-width="5"/> -->
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="row"> <!-- Edit Goal form row -->
+      <div class="col-xs-12 edit-goal-form isHidden">
+        <div class="h4">Edit Goal:</div>
+        <form id="editGoalForm" class="form-inline">
+          <div class="form-group">
+            <label for="editGoalIsbn">ISBN</label>
+            <input type="text" class="form-control" id="editGoalIsbn" disabled="true">
+          </div>
+          <div class="form-group">
+            <label for="editGoalStartDate">Start on</label>
+            <input type="date" class="form-control" id="editGoalStartDate">
+          </div>
+          <div class="form-group">
+            <label for="editGoalEndDate">Complete by</label>
+            <input type="date" class="form-control" id="editGoalEndDate">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-default">Update</button>
+            <button id="editGoalCancel" type="button" class="btn btn-default">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row"> <!-- Add Progress form row -->
+      <div class="col-xs-12 add-progress-form isHidden">
+        <div class="h4">Record Progress:</div>
+        <form id="addProgressForm" class="form-inline">
+          <div class="form-group">
+            <label for="addProgressIsbn">ISBN</label>
+            <input type="text" class="form-control" id="addProgressIsbn" disabled="true">
+          </div>
+          <div class="form-group">
+            <label for="addProgressDate">Date</label>
+            <input type="date" class="form-control" id="addProgressDate">
+          </div>
+          <div class="form-group">
+            <label for="addProgressPages">Pages</label>
+            <input type="number" class="form-control" id="addProgressPages">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-default">Record</button>
+            <button id="addProgressCancel" type="button" class="btn btn-default">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row"> <!-- Archive Goal Confirm form row -->
+      <div class="col-xs-12 archive-goal-form isHidden">
+        <div class="h4">Archive Goal:</div>
+        <form id="confirmArchiveForm" class="form-inline">
+          <div class="form-group">
+            <!-- <label for="confirmArchiveIsbn">ISBN</label> -->
+            <input type="hidden" class="form-control" id="confirmArchiveIsbn">
+          </div>
+          <div class="form-group h4 red-text">
+            Are you sure you want to archive your goal?
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-default">Confirm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row"> <!-- Search form row -->
       <div class="col-xs-12 search-form isHidden">
+        <div class="h4">Title Search:</div>
         <form id="searchForm" class="form-inline">
           <div class="form-group">
             <label for="title">Title</label>
@@ -31,7 +106,10 @@
           </table>
         </div>
       </div>
+    </div>
+    <div class="row"> <!-- Add goal form row -->
       <div class="col-xs-12 add-form isHidden">
+        <div class="h4">Create Goal:</div>
         <form id="addForm" class="form">
           <div class="form-group">
             <label for="addIsbn">ISBN</label>
@@ -64,28 +142,37 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-12 graph">hi</div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12"><br><br></div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 text-right">
-        <span class="h3"><a id="show_datatable" hef="#" class="isHidden"><span class="label label-default action"><span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span> Show</span></a></span>
-        <span class="h3"><a id="hide_datatable" hef="#"><span class="label label-default action"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Hide</span></a></span>
+    <div class="row"> <!-- Existing goals row -->
+      <div class="col-xs-12 goalsTable">
+        <div class="h4">Your Goals:</div>
+        <table id="goalsTable" class="table table-striped">
+          <thead><th class="text-left">Title</th><th class="text-center">Pages</th><th class="text-center">Started On</th><th class="text-center">Target</th><th class="text-center">Progress</th><th></th></thead>
+          <tbody></tbody>
+        </table>
       </div>
     </div>
-    <div class="row">
-      <div id="dataTable" class="col-xs-12 datatable">bye</div>
+    <!-- <div class="row">
+        <div class="col-xs-12">
+        <br><br>
+      </div>
+    </div> -->
+    <div class="row"> <!-- Goal Progress row -->
+      <div class="col-xs-12 progressTable">
+        <div class="h4">Your Progress:</div>
+        <table id="progressTable" class="table table-striped">
+          <thead>
+            <th class="text-left">Date</th>
+            <th class="text-left">Title</th>
+            <th class="text-center">Day's Pages</th>
+            <th class="text-center">Daily Target</th>
+            <th class="text-center">Total Read</th>
+            <th class="text-center">Cumulative Target</th>
+            <th class="text-center">Total Pages</th>
+            <th class="text-center">Percent Complete</th></thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </body>
 </html>
-
-<!-- <svg width="500" height="50">
-  <text x="250" y="25" font-family="sans-serif" font-size="25" fill="gray">Easy-peasy</text>
-  <circle cx="25" cy="25" r="22"
-fill="yellow" stroke="orange" stroke-width="5"/>
-</svg> -->
-<!-- spacer -->

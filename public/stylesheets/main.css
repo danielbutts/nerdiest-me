@@ -1,3 +1,14 @@
+body {
+  /*background-image: url("http://www.publicdomainpictures.net/pictures/130000/velka/textured-background-1442843730lVu.jpg");*/
+  /*background-image: url("http://cdn.wonderfulengineering.com/wp-content/uploads/2014/04/code-wallpaper-2.jpg");*/
+  background-image: url("https://img.clipartfox.com/b8dc9cd6f3e5adaea7008f77813b664c_light-color-abstract-polygonal-light-color-background-clipart_800-800.jpeg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  /*opacity:.5*/
+}
+
 img.logo {
   width:25px;
   height:25px;
@@ -32,27 +43,72 @@ div.add-form {
   padding-bottom:10px;
 }
 
-div.graph {
-  height:400px;
-  background-color: lightgray;
+div.goalsTable {
+  background-color: #D2DFE7;
   border-radius: 10px;
   border:1px solid darkgray;
   margin-bottom:10px;
+}
+
+div.progressGraph {
+  background-color: #F8ECF0;
+  border-radius: 10px;
+  border:1px solid darkgray;
+  margin-bottom:10px;
+  height:400px;
+}
+
+div.progressTable {
+  background-color: #CAC7D0;
+  border-radius: 10px;
+  border:1px solid darkgray;
+  margin-bottom:10px;
+}
+
+div.edit-goal-form {
+  /*height:400px;*/
+  background-color: #A0A3B4;
+  border-radius: 10px;
+  border:1px solid darkgray;
+  margin-bottom:10px;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+div.add-progress-form{
+  /*height:400px;*/
+  background-color: #E1E6E9;
+  border-radius: 10px;
+  border:1px solid darkgray;
+  margin-bottom:10px;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+div.archive-goal-form {
+  /*height:400px;*/
+  background-color: #D39FA3;
+  border-radius: 10px;
+  border:1px solid darkgray;
+  margin-bottom:10px;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+nav.navbar.background {
+  background-color: #E8E3E9;
 }
 
 span.action {
   margin-top: 5px;
   margin-bottom: 5px;
   display:inline-block;
+  background-color: #968D9E;
 }
 
-/*a.isHidden {
-  display:none;
+div.last {
+  padding-left:150px;
 }
-
-div.isHidden {
-  display:none;
-}*/
 
 .isHidden {
   display:none;
@@ -61,4 +117,66 @@ div.isHidden {
 img.thumbnail {
   width:64px;
   height:85px;
+}
+
+.red {
+  background-color: #f2bac0;
+}
+
+.red-text {
+  color:#a02e3b;
+  padding-bottom:10px;
+}
+
+.red-text td{
+  color:#a02e3b;
+  padding-bottom:10px;
+}
+
+.green-text td{
+  color:#3a9952;
+  padding-bottom:10px;
+}
+
+span.green {
+  background-color: #c5efb8;
+  border:1px solid darkgray;
+}
+
+span.green span {
+  color:#3a9952;
+}
+
+span.blue {
+  background-color: #becde0;
+  border:1px solid darkgray;
+}
+
+span.blue span {
+  color:#92a0b2;
+}
+
+span.red {
+  background-color: #EB9393;
+  border:1px solid darkgray;
+}
+
+span.red span {
+  color:#a02e3b;
+}
+
+td.h6.fudge-table {
+  padding-top: 15px;
+}
+
+svg {
+  border: 1px solid darkgray;
+  height:345px;
+  width:100%;
+  background-color: white;
+}
+
+div.text-center.svg-container {
+  width:1135px;
+  margin:auto;
 }
